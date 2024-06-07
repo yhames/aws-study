@@ -1,6 +1,9 @@
 # IAM
 
 - [IAM](#iam)
+  - [What's IAM](#whats-iam)
+  - [Users and Groups](#users-and-groups)
+  - [Permissions](#permissions)
 
 ## What's IAM
 
