@@ -1,3 +1,11 @@
+# AWS
+
+- [AWS](#aws)
+  - [Regions](#regions)
+  - [Availability Zones](#availability-zones)
+  - [Edge Location](#edge-location)
+  - [Console](#console)
+
 ## Regions
 
 a regions is a cluster of data centers.
