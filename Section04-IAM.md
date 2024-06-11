@@ -107,3 +107,32 @@ MFA devices in AWS:
 * Virtual MFA device (e.g. Google Authenticator, Authy)
 * Universal 2nd Factor (U2F) security key (e.g. Yubikey)
 * Hardware key fob MFA device (e.g. Gemalto, SurePassID for AWS GovCloud)
+
+## Access Keys
+
+Options to Access AWS:
+* AWS Management Console : password + MFA
+  * web-based user interface
+* AWS Command Line Interface (CLI) : access keys
+  * terminal
+* AWS Software Development Kits (SDKs) : access keys
+  * code
+
+Access keys are used to interact with AWS services programmatically.
+
+Access keys are generated through the AWS Console.
+Users manage their own access keys.
+
+Access keys consist of:
+* Access key ID (public) -> username
+* Secret access key (only shown once) -> password
+
+> AWS CLI is a tool that enables you to interact with AWS services
+> using commands in your command-line shell.
+> it direct access to the public APIs of AWS services.
+
+> AWS SDKs are available for multiple programming languages
+> they enable you to access and manage AWS services programmatically.
+> it must be embedded in your application code.  
+> e.g. AWS CLI is built on AWS SDK for Python (Boto3)
+ 
