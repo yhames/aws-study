@@ -152,3 +152,14 @@ e.g. EC2 Instance Roles, Lambda Function Roles, etc.
   * shows the service permissions granted to a user and when those services were last accessed
   * this helps you set permissions boundaries and ensure least privilege
 
+## Best Practices
+
+* Don't use root account except for AWS account setup
+* One physical user = one AWS user
+* Assign permissions using groups
+* Create a strong password policy and Use MFA
+* Assign permissions of AWS services using IAM Roles
+* Use Access Keys for Programmatic Access
+* Audit permissions of your account with the IAM Credentials Report
+* Never share IAM users and Access Keys
+
