@@ -7,6 +7,8 @@
   - [IAM Policies inheritance](#iam-policies-inheritance)
   - [IAM Password Policy](#iam-password-policy)
   - [IAM MFA (Multi-Factor Authentication)](#iam-mfa-multi-factor-authentication)
+  - [Access Keys](#access-keys)
+  - [IAM Roles](#iam-roles)
 
 ## What's IAM
 
@@ -136,3 +138,17 @@ Access keys consist of:
 > it must be embedded in your application code.  
 > e.g. AWS CLI is built on AWS SDK for Python (Boto3)
  
+## IAM Roles
+
+Role is specific permissions to perform actions on AWS services.
+
+e.g. EC2 Instance Roles, Lambda Function Roles, etc.
+
+## IAM Security Tools
+
+* IAM Credentials Report (Account-level)
+  * report that list all users and the status of their various credentials
+* IAM Access Advisor (User-level)
+  * shows the service permissions granted to a user and when those services were last accessed
+  * this helps you set permissions boundaries and ensure least privilege
+
