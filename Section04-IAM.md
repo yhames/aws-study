@@ -163,3 +163,14 @@ e.g. EC2 Instance Roles, Lambda Function Roles, etc.
 * Audit permissions of your account with the IAM Credentials Report
 * Never share IAM users and Access Keys
 
+## Keywords for Summary
+
+* IAM: Identity and Access Management
+* Users: physical users
+* Groups: collection of users
+* Policies: JSON documents that define permissions
+* Roles: define permissions for AWS services
+* Security: MFA, password policy, access keys
+* AWS CLI: command-line tool to interact with AWS
+* AWS SDKs: enable you to access and manage AWS services programmatically
+* Audit: IAM Credentials Report, IAM Access Advisor
