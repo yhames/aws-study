@@ -142,7 +142,11 @@ Access keys consist of:
 
 Role is specific permissions to perform actions on AWS services.
 
+You can assign permissions to AWS services with IAM Roles.
+
 e.g. EC2 Instance Roles, Lambda Function Roles, etc.
+
+> Roles는 AWS 서비스가 다른 AWS 서비스에 액세스할 수 있도록 권한을 부여하는 방법입니다.
 
 ## IAM Security Tools
 
