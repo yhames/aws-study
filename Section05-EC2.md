@@ -1,17 +1,19 @@
 # EC2
 
 - [EC2](#ec2)
-    - [Budget](#budget)
-    - [EC2](#ec2-1)
-        - [Sizing and configuration](#sizing-and-configuration)
-        - [EC2 User Data](#ec2-user-data)
-        - [EC2 Instance Types](#ec2-instance-types)
-    - [EC2 Instance Type](#ec2-instance-type)
-        - [General Purpose](#general-purpose)
-        - [Compute Optimized](#compute-optimized)
-        - [Memory Optimized](#memory-optimized)
-        - [Storage Optimized](#storage-optimized)
-    - [Security Group](#security-group)
+  - [Budget](#budget)
+  - [EC2](#ec2-1)
+    - [Sizing and configuration](#sizing-and-configuration)
+    - [EC2 User Data](#ec2-user-data)
+    - [EC2 Instance Types](#ec2-instance-types)
+  - [EC2 Instance Type](#ec2-instance-type)
+    - [General Purpose](#general-purpose)
+    - [Compute Optimized](#compute-optimized)
+    - [Memory Optimized](#memory-optimized)
+    - [Storage Optimized](#storage-optimized)
+  - [Security Group](#security-group)
+    - [Referencing other security groups](#referencing-other-security-groups)
+    - [Security Group with Roles](#security-group-with-roles)
 
 ## Budget
 
@@ -181,4 +183,12 @@ They regulate:
 
 서로 다른 인스턴스를 사용하는 경우, 위와 같이 다른 보안 그룹을 참조하여 트래픽을 허용할 수 있습니다.
 
+### Security Group with Roles
+
+EC2 인스턴스에서 다른 AWS 서비스에 액세스하려면 해당 서비스에 대한 권한이 필요합니다.
+
+aws configure 명령을 사용하여 인스턴스에 권한을 부여할 수 있지만,
+해당 방법은 해당 인스턴스에 입력된 자격 증명 정보가 탈취될 수 있기 때문에 권장되지 않습니다. 
+
+대신 해당 인스턴스의 Security Group에 Role을 추가하여 권한을 부여하는 것을 권장합니다.
 
