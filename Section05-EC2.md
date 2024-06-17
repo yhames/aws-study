@@ -1,16 +1,17 @@
 # EC2
 
 - [EC2](#ec2)
-  - [Budget](#budget)
-  - [EC2](#ec2-1)
-    - [Sizing and configuration](#sizing-and-configuration)
-    - [EC2 User Data](#ec2-user-data)
-    - [EC2 Instance Types](#ec2-instance-types)
-  - [EC2 Instance Type](#ec2-instance-type)
-    - [General Purpose](#general-purpose)
-    - [Compute Optimized](#compute-optimized)
-    - [Memory Optimized](#memory-optimized)
-    - [Storage Optimized](#storage-optimized)
+    - [Budget](#budget)
+    - [EC2](#ec2-1)
+        - [Sizing and configuration](#sizing-and-configuration)
+        - [EC2 User Data](#ec2-user-data)
+        - [EC2 Instance Types](#ec2-instance-types)
+    - [EC2 Instance Type](#ec2-instance-type)
+        - [General Purpose](#general-purpose)
+        - [Compute Optimized](#compute-optimized)
+        - [Memory Optimized](#memory-optimized)
+        - [Storage Optimized](#storage-optimized)
+    - [Security Group](#security-group)
 
 ## Budget
 
@@ -82,14 +83,14 @@ m5.2xlarge
 ```
 
 - m : instance class
-  - more info : https://aws.amazon.com/ko/ec2/instance-types/
+    - more info : https://aws.amazon.com/ko/ec2/instance-types/
 - 5 : generation
 - 2xlarge : size within the instance class
-  - more CPU and RAM
+    - more CPU and RAM
 
 ### General Purpose
 
-Instance class for `t`, `m` is a general purpose instance. 
+Instance class for `t`, `m` is a general purpose instance.
 
 it is used for diversity of workloads such as `web servers`, `code repositories`
 
@@ -120,7 +121,7 @@ it is used for `memory-bound` applications that benefit from large data sets in 
 
 Instance class for `i`, `d`, `h` is a storage optimized instance.
 
-it is used for `storage-bound` applications that require 
+it is used for `storage-bound` applications that require
 high, sequential read and write access
 to very large data sets on local storage.
 
@@ -128,5 +129,56 @@ to very large data sets on local storage.
 > `Relational & NoSQL databases`, `Data warehousing applications`,
 > `Cache for in-memory databases(Redis)`, `Distributed file systems`
 
+## Security Group
+
+> https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/vpc-security-groups.html
+
+Security Group은 인바운드 및 아웃바운드 트래픽을 제어하는 방화벽 역할을 합니다.
+
+```mermaid
+graph LR
+    www -- Inbound Traffic --> sg[SecurityGroup]
+    sg --> EC2
+    EC2 --> sg
+    sg -- Outbound Traffic --> www
+
+```
+
+Security Group only contain `allow` rules.
+Security Groups rules can reference by IP or by other security group.
+
+They regulate:
+
+- Access to ports
+- Authorize IP ranges (IPv4 and IPv6)
+- Control inbound network (from other to the instance)
+- Control outbound network (from the instance to other)
+
+| Type            | Protocol | Port Range | Source            | Description       |
+|-----------------|----------|------------|-------------------|-------------------|
+| HTTP            | TCP      | 80         | 0.0.0.0/0         | Test HTTP traffic |
+| SSH             | TCP      | 22         | 122.142.192.15/32 |                   |
+| Custom TCP Rule | TCP      | 4242       | 0.0.0.0/0         | Java App          |
+
+![ec2_security_group.png](images%2Fec2_security_group.png)
+
+* Can be attached to multiple instances
+* Lock down to a region/VPC combination
+* Does live "outside" the EC2 - if traffic is blocked, the instance won't see it  
+  (보안 그룹은 EC2 외부에 있기 떄문에, 트래픽이 차단되면 인스턴스는 해당 트래픽을 볼 수 없습니다.)
+
+> It is Good to maintain one separate security group for `SSH access`
+
+> If application is not accessible with timeout, check the security group rules  
+> If application if not accessible with connection refused, check the application
+
+> All inbound traffic is blocked by default,  
+> all outbound traffic is authorized by default 
+
+### Referencing other security groups 
+
+![ec2_sg_w_sg.png](images%2Fec2_sg_w_sg.png)
+
+서로 다른 인스턴스를 사용하는 경우, 위와 같이 다른 보안 그룹을 참조하여 트래픽을 허용할 수 있습니다.
 
 
