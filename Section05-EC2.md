@@ -19,6 +19,9 @@
     - [Reserved](#reserved)
     - [Savings Plans](#savings-plans)
     - [Spot](#spot)
+    - [Dedicated Hosts](#dedicated-hosts)
+    - [Dedicated Instances](#dedicated-instances)
+    - [Capacity Reservations](#capacity-reservations)
 
 ## Budget
 
