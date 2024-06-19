@@ -272,6 +272,7 @@ Spot은 최대 가격을 설정하고, 해당 가격을 초과하면 인스턴�
 이는 설정을 통해 중지 혹은 절전모드로 전환할 수 있습니다.
 
 ![ec2_spot_liftcycle.png](images%2Fec2_spot_liftcycle.png)
+> [AWS - 스팟 인스턴스 작업](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/WindowsGuide/spot-requests.html)
 
 * Spot Instance Request: 
   * 용량이 가용 상태가 되면 EC2는 사용자의 요청을 이행합니다. 
