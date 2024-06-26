@@ -7,6 +7,7 @@
     - [Cluster](#cluster)
     - [Spread](#spread)
     - [Partition](#partition)
+  - [ENI (Elastic Network Interface)](#eni-elastic-network-interface)
 
 이 강의에서는 `IPv6`는 다루지 않지만 AWS에서는 `IPv6`를 지원합니다.
 
@@ -95,15 +96,33 @@ Elastic IP를 사용하면 하나의 인스턴스가 실패해서 종료되어�
     * 여러 AZ에 인스턴스를 분산하여 고가용성을 제공
     * 100개 이상의 인스턴스를 배치할 수 있음
     * 파티션의 인스턴스들은 다른 파티션과 물리적으로 격리되어 있음
-      * `Partition01`에 장애가 생겨도 `Partition02`는 영향을 받지 않음
+        * `Partition01`에 장애가 생겨도 `Partition02`는 영향을 받지 않음
     * 파티션에 대한 메타 데이터를 사용하여 인스턴스가 같은 파티션에 있는지 확인할 수 있음
 * 단점:
     * Limit of 7 partition per AZ
 * 사용 사례:
-  * HDFS(Hadoop Distributed File System) HBase, Cassandra, Kafka 등
-  * 파티션을 인식하는 빅데이터 어플리케이션
+    * HDFS(Hadoop Distributed File System) HBase, Cassandra, Kafka 등
+    * 파티션을 인식하는 빅데이터 어플리케이션
 
+## ENI (Elastic Network Interface)
 
+![elastic_network_interface.png](images%2Felastic_network_interface.png)
+
+ENI는 가상 네트워크 카드를 나타내며 VPC의 논리적 구성요소 입니다.
+
+ENI는 EC2 인스턴스가 네트워크에 액세스할 수 있게 합니다.
+
+ENI의 특징은 다음과 같습니다.
+
+* Primary private IPv4와 하나 이상의 Secondary private IPv4 주소를 갖습니다.
+* 각 private IPv4 주소는 하나의 Elastic IP 혹은 Public IP 주소로 연결될 수 있습니다.
+* 하나 이상의 보안 그룹을 연결할 수 있습니다.
+* MAC 주소를 갖습니다.
+
+ENI는 EC2 인스턴스에 독립적으로 생성하여 연결하거나,
+장애 조치를 위해 EC2 인스턴스에서 이동시킬 수 있습니다.
+
+ENI는 특정 가용 영역에 고정됩니다.
 
 
 
