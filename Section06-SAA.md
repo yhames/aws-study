@@ -8,6 +8,7 @@
     - [Spread](#spread)
     - [Partition](#partition)
   - [ENI (Elastic Network Interface)](#eni-elastic-network-interface)
+  - [EC2 Hibernate (절전 모드)](#ec2-hibernate-절전-모드)
 
 이 강의에서는 `IPv6`는 다루지 않지만 AWS에서는 `IPv6`를 지원합니다.
 
