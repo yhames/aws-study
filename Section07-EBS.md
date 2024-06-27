@@ -3,6 +3,10 @@
 - [EBS (Elastic Block Store)](#ebs-elastic-block-store)
 	- [What's an EBS Volume](#whats-an-ebs-volume)
 	- [EBS Snapshot](#ebs-snapshot)
+	- [EBS Volume Types](#ebs-volume-types)
+		- [General Purpose SSD (gp2/gp3)](#general-purpose-ssd-gp2gp3)
+		- [Provisioned IOPS SSD (io1/io2)](#provisioned-iops-ssd-io1io2)
+		- [HDD (st1/sc1)](#hdd-st1sc1)
 	- [AMI (Amazon Machine Image)](#ami-amazon-machine-image)
 		- [AMI Process](#ami-process)
 	- [EC2 Instance Store](#ec2-instance-store)
@@ -46,6 +50,73 @@ EBS 스냅샷은 다음과 같은 기능을 가지고 있습니다.
 * FSR (Fast Snapshot Restore)
   * 스냅샷을 완전 초기화하여 첫 사용에서 지연시간을 줄이는 기능입니다.
   * 스냅샷 복구 중 가장 비싼 요금이 청구됩니다.
+
+## EBS Volume Types
+
+> [AWS - Amazon EBS 볼륨 유형](https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-volume-types.html)  
+
+EBS 볼륨은 Size, Throughput, IOPS에 따라 종류가 나뉩니다. 
+
+EBS 볼륨은 6가지의 유형이 있습니다.
+
+* gp2/gp3: General Purpose SSD
+  * 가장 일반적인 유형으로 대부분의 워크로드에 적합합니다.
+  * 가격이 저렴하고 성능이 좋습니다.
+* io1/io2: Provisioned IOPS SSD
+  * IOPS를 미리 예약하여 높은 성능을 제공합니다.
+  * 높은 IOPS가 필요한 워크로드에 적합합니다.
+* st1: Throughput Optimized HDD
+  * 저 비용의 HDD 볼륨
+  * 잦은 접근과 처리량이 많은 워크로드에 적합합니다.
+* sc1: Cold HDD
+  * 가장 저렴한 HDD 볼륨
+  * 자주 접근하지 않는 데이터에 적합합니다.
+
+부팅 볼륨은 오직 gp2/gp3, io1/io2 유형만 사용할 수 있습니다.
+
+### General Purpose SSD (gp2/gp3)
+
+> [AWS - 범용 SSD 볼륨](https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html)
+
+General Purpose SSD는 짧은 지연 시간과 효율적인 비용의 스토리지입니다.
+
+부팅 볼륨, 가상 데스크톱, 개발 및 테스트 환경 등 다양한 워크로드에 적합합니다.
+
+크기는 1GB ~ 16TB까지 지원하며, IOPS와 처리량은 gp2와 gp3에 따라 다릅니다.
+
+gp3는 gp2와 다르게 볼륨과 IOPS를 분리하여 볼륨의 크기와 상관없이 IOPS를 선택할 수 있습니다. 
+
+### Provisioned IOPS SSD (io1/io2)
+
+> [AWS - 프로비저닝된 IOPS SSD 볼륨](https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/provisioned-iops.html)
+
+IOPS 성능을 유지해야하거나 16,000 IOPS 이상이 필요한 워크로드에 적합합니다.
+즉, 스토리지 성능과 일관성에 민감한 어플리케이션은 io1/io2를 사용하는 것이 좋습니다.
+
+크기는 4GB ~ 16TB까지 지원하며, IOPS와 처리량은 io1과 io2에 따라 다릅니다.
+기본적으로 32,000 IOPS를 지원하며, Nitro EC2를 사용하면 최대 64,000 IOPS까지 선택할 수 있습니다.
+
+io1/io2는 gp3와 같이 스토리지의 크기에 독립적으로 IOPS를 선택할 수 있습니다.
+io2는 io1에 비해 더 적은 비용으로 동일한 IOPS와 내구성을 제공합니다.
+
+io2 Block Express의 경우 4 ~ 64TB의 크기를 지원하며, 
+밀리초 미만의 저지연 시간과 최대 256,000 IOPS를 제공합니다.(IOPS:GiB 비율 1,000:1 인 경우)
+
+Provisioned IOPS SSD은 EBS 다중 연결을 지원합니다.
+
+### HDD (st1/sc1)
+
+st1/sc1는 부팅 볼륨으로 사용될 수 없습니다.
+
+크기는 125MiB ~ 16TiB까지 지원합니다.
+
+* Throughput Optimized HDD (st1)
+  * 자주 접근하지만 큰 파일을 처리하는 워크로드에 적합합니다.
+  * 데이터 웨어하우스, 빅데이터, 로그 처리, 등에 적합합니다.
+  * 최대 500MiB/s의 처리량과 500 IOPS를 제공합니다.
+* Cold HDD (sc1)
+  * 자주 접근하지 않는 데이터를 저장하는 워크로드에 적합합니다.
+  * 최대 250MiB/s의 처리량과 250 IOPS를 제공합니다.
 
 ## AMI (Amazon Machine Image)
 
