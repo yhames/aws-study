@@ -3,6 +3,8 @@
 - [EBS (Elastic Block Store)](#ebs-elastic-block-store)
 	- [What's an EBS Volume](#whats-an-ebs-volume)
 	- [EBS Snapshot](#ebs-snapshot)
+	- [AMI (Amazon Machine Image)](#ami-amazon-machine-image)
+		- [AMI Process](#ami-process)
 
 ## What's an EBS Volume
 
@@ -43,6 +45,34 @@ EBS 스냅샷은 다음과 같은 기능을 가지고 있습니다.
 * FSR (Fast Snapshot Restore)
   * 스냅샷을 완전 초기화하여 첫 사용에서 지연시간을 줄이는 기능입니다.
   * 스냅샷 복구 중 가장 비싼 요금이 청구됩니다.
+
+## AMI (Amazon Machine Image)
+
+AMI는 EC2 인스턴스를 시작하는 데 필요한 정보를 포함하는 템플릿입니다.
+
+AMI를 사용하면 필요한 소프트웨어나 패키지를 미리 패키징하기 때문에
+인스턴스를 실행할 때 시간을 단축할 수 있습니다.
+
+AMI는 특정 지역에 구축해야하고 다른 지역으로 복사할 수 있습니다.
+
+* public AMI: AWS에서 제공하는 AMI
+* custom AMI: 사용자가 만든 AMI
+  * 사용자가 직접 AMI를 관리해야합니다.
+* marketplace AMI: AWS Marketplace에서 제공하는 AMI
+  * 다른 사람이 구축한 AMI를 구매해서 사용합니다.
+
+### AMI Process
+
+![ami_process.png](images%2Fami_process.png)
+
+* Start with an existing AMI
+* Customize the instance
+* Stop the instance (for data integrity)
+* Build an AMI from the instance (this will also create an EBS snapshot)
+* Launch new instances from that AMI
+
+
+
 
 
 
