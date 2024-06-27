@@ -5,6 +5,7 @@
 	- [EBS Snapshot](#ebs-snapshot)
 	- [AMI (Amazon Machine Image)](#ami-amazon-machine-image)
 		- [AMI Process](#ami-process)
+	- [EC2 Instance Store](#ec2-instance-store)
 
 ## What's an EBS Volume
 
@@ -71,8 +72,14 @@ AMI는 특정 지역에 구축해야하고 다른 지역으로 복사할 수 있
 * Build an AMI from the instance (this will also create an EBS snapshot)
 * Launch new instances from that AMI
 
+## EC2 Instance Store
 
+만약 높은 디스크 성능이 필요하면 EC2 인스턴스 스토어를 사용할 수 있습니다.
 
+EC2 인스턴스 스토어를 사용하면 해당 서버에 물리적으로 연결된 디스크를 갖습니다.
+이때 연결된 디스크를 `Instance Store`라고 합니다.
 
+Instance Store는 더 나은 I/O 성능을 제공하지만, 데이터는 인스턴스가 종료되면 사라집니다.
+따라서 임시 데이터를 저장하는 용도로 사용합니다. (e.g. cache, buffer, scratch data)
 
 
