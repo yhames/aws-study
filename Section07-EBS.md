@@ -7,6 +7,7 @@
 		- [General Purpose SSD (gp2/gp3)](#general-purpose-ssd-gp2gp3)
 		- [Provisioned IOPS SSD (io1/io2)](#provisioned-iops-ssd-io1io2)
 		- [HDD (st1/sc1)](#hdd-st1sc1)
+	- [EBS Multi-Attach](#ebs-multi-attach)
 	- [AMI (Amazon Machine Image)](#ami-amazon-machine-image)
 		- [AMI Process](#ami-process)
 	- [EC2 Instance Store](#ec2-instance-store)
@@ -117,6 +118,24 @@ st1/sc1는 부팅 볼륨으로 사용될 수 없습니다.
 * Cold HDD (sc1)
   * 자주 접근하지 않는 데이터를 저장하는 워크로드에 적합합니다.
   * 최대 250MiB/s의 처리량과 250 IOPS를 제공합니다.
+
+## EBS Multi-Attach
+
+![ebs_multi_attach.png](images%2Febs_multi_attach.png)
+
+EBS 다중 연결은 가용 영역 내 여러 EC2 인스턴스가 동시에 동일한 EBS 볼륨에 연결할 수 있는 기능입니다.
+
+이는 오직 io1/io2 볼륨에서만 사용할 수 있습니다.
+
+다중 연결된 인스턴스들은 고성능 볼륨에 대한 읽기/쓰기 작업을 동시에 수행할 수 있습니다.
+
+* 활용사례
+  * 가용성을 높이기 위해 여러 인스턴스를 클러스터링 하는 경우 (e.g. Teradata)
+  * 동시 쓰기 작업을 관리해야하는 경우
+
+한번에 16개의 인스턴스만 다중 연결할 수 있습니다.
+
+반드시 cluster-aware 파일 시스템을 사용해야합니다. (not XFS, EX4 etc..)
 
 ## AMI (Amazon Machine Image)
 
