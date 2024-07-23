@@ -13,6 +13,7 @@
     - [AMI Process](#ami-process)
   - [EC2 Instance Store](#ec2-instance-store)
   - [EFS (Elastic File System)](#efs-elastic-file-system)
+  - [EBS vs EFS](#ebs-vs-efs)
 
 ## What's an EBS Volume
 
@@ -214,3 +215,7 @@ Standard는 자주 액세스되는 데이터에, EFS-IA는 자주 액세스되�
 또한 스토리지 계층 간에 파일을 자동으로 이동하기 위해 Lifecycle Policy를 설정할 수 있습니다.
 
 EFS는 가용성과 내구성에 따른 옵션으로 `Regional`과 `One Zone`을 사용할 수 있습니다. One Zone은 하나의 가용 영역에만 데이터를 저장하며, 다른 가용 영역에 비해 저렴하게 사용할 수 있습니다. 개발 환경이나 백업 데이터처럼 액세스 빈도가 낮은 데이터에 사용합니다. One Zone은 EFS IA와 호환되며 주로 EFS One Zone-IA라고 불립니다. 자세한 내용은 [공식문서](https://docs.aws.amazon.com/ko_kr/efs/latest/ug/mounting-one-zone.html)를 참고하세요.
+
+## EBS vs EFS
+
+![ebs_vs_efs.png](images%2Febs_vs_efs.png)
