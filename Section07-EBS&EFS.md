@@ -12,6 +12,7 @@
   - [AMI (Amazon Machine Image)](#ami-amazon-machine-image)
     - [AMI Process](#ami-process)
   - [EC2 Instance Store](#ec2-instance-store)
+  - [EFS (Elastic File System)](#efs-elastic-file-system)
 
 ## What's an EBS Volume
 
@@ -185,4 +186,31 @@ EC2 인스턴스 스토어를 사용하면 해당 서버에 물리적으로 연�
 
 Instance Store는 더 나은 `I/O 성능`을 제공하지만, 데이터는 인스턴스가 종료되면 사라집니다. 따라서 `임시 데이터를 저장하는 용도`로 사용합니다. (e.g. cache, buffer, scratch data)
 
- 
+## EFS (Elastic File System)
+
+EFS는 여러 EC2 인스턴스에서 동시에 사용할 수 있는 `네트워크 파일 시스템`입니다.
+
+![efs_example.png](images%2Fefs_example.png)
+
+EFS는 여러 가용 영역에서 사용할 수 있으며, 자동으로 확장되고 사용량에 따라 비용을 지불하기 때문에 용량을 미리 예약할 필요가 없습니다.
+
+gp2 EBS 볼륨에 비해 약 3배정도 비싸다는 단점이 있습니다.
+
+EFS는 다음과 같은 특징을 가지고 있습니다.
+* 활용사례: 콘텐츠 관리, 웹 서버, 데이터 공유, 워드프레스 등
+* NFSv4.1 프로토콜을 사용
+* EFS에 대한 접근을 제어하려면 Security Group을 설정해야합니다.
+* KMS를 사용하여 EFS 데이터를 암호화할 수 있습니다.
+* 리눅스 기반의 AMI에서만 사용할 수 있으며, POSIX 파일 시스템을 사용합니다.
+
+EFS의 성능에 따른 유형은 General Purpose, Performance Mode, Throughput Mode로 나뉩니다. 자세한 내용은 [공식 문서](https://docs.aws.amazon.com/ko_kr/efs/latest/ug/performance.html)를 참고하세요.
+
+
+EFS의 Storage Classes는 Standard, EFS-IA, Archive로 나뉩니다.
+Standard는 자주 액세스되는 데이터에, EFS-IA는 자주 액세스되지 않는 데이터에, Archive는 장기 보관 데이터에 적합합니다. 자세한 내용은 [공식문서](https://aws.amazon.com/ko/efs/storage-classes/)를 참고하세요.
+
+![efs_lifecycle_policy.png](images%2Fefs_lifecycle_policy.png)
+
+또한 스토리지 계층 간에 파일을 자동으로 이동하기 위해 Lifecycle Policy를 설정할 수 있습니다.
+
+EFS는 가용성과 내구성에 따른 옵션으로 `Regional`과 `One Zone`을 사용할 수 있습니다. One Zone은 하나의 가용 영역에만 데이터를 저장하며, 다른 가용 영역에 비해 저렴하게 사용할 수 있습니다. 개발 환경이나 백업 데이터처럼 액세스 빈도가 낮은 데이터에 사용합니다. One Zone은 EFS IA와 호환되며 주로 EFS One Zone-IA라고 불립니다. 자세한 내용은 [공식문서](https://docs.aws.amazon.com/ko_kr/efs/latest/ug/mounting-one-zone.html)를 참고하세요.
