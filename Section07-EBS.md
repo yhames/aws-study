@@ -1,16 +1,17 @@
 # EBS (Elastic Block Store)
 
 - [EBS (Elastic Block Store)](#ebs-elastic-block-store)
-	- [What's an EBS Volume](#whats-an-ebs-volume)
-	- [EBS Snapshot](#ebs-snapshot)
-	- [EBS Volume Types](#ebs-volume-types)
-		- [General Purpose SSD (gp2/gp3)](#general-purpose-ssd-gp2gp3)
-		- [Provisioned IOPS SSD (io1/io2)](#provisioned-iops-ssd-io1io2)
-		- [HDD (st1/sc1)](#hdd-st1sc1)
-	- [EBS Multi-Attach](#ebs-multi-attach)
-	- [AMI (Amazon Machine Image)](#ami-amazon-machine-image)
-		- [AMI Process](#ami-process)
-	- [EC2 Instance Store](#ec2-instance-store)
+  - [What's an EBS Volume](#whats-an-ebs-volume)
+  - [EBS Snapshot](#ebs-snapshot)
+  - [EBS Volume Types](#ebs-volume-types)
+    - [General Purpose SSD (gp2/gp3)](#general-purpose-ssd-gp2gp3)
+    - [Provisioned IOPS SSD (io1/io2)](#provisioned-iops-ssd-io1io2)
+    - [HDD (st1/sc1)](#hdd-st1sc1)
+  - [EBS Multi-Attach](#ebs-multi-attach)
+  - [EBS Encrpytion](#ebs-encrpytion)
+  - [AMI (Amazon Machine Image)](#ami-amazon-machine-image)
+    - [AMI Process](#ami-process)
+  - [EC2 Instance Store](#ec2-instance-store)
 
 ## What's an EBS Volume
 
@@ -125,7 +126,7 @@ st1/sc1는 부팅 볼륨으로 사용될 수 없습니다.
 
 EBS 다중 연결은 가용 영역 내 여러 EC2 인스턴스가 동시에 동일한 EBS 볼륨에 연결할 수 있는 기능입니다.
 
-이는 오직 io1/io2 볼륨에서만 사용할 수 있습니다.
+이는 오직 `io1`/`io2` 볼륨에서만 사용할 수 있습니다.
 
 다중 연결된 인스턴스들은 고성능 볼륨에 대한 읽기/쓰기 작업을 동시에 수행할 수 있습니다.
 
@@ -133,9 +134,22 @@ EBS 다중 연결은 가용 영역 내 여러 EC2 인스턴스가 동시에 동�
   * 가용성을 높이기 위해 여러 인스턴스를 클러스터링 하는 경우 (e.g. Teradata)
   * 동시 쓰기 작업을 관리해야하는 경우
 
-한번에 16개의 인스턴스만 다중 연결할 수 있습니다.
+한번에 `16개`의 인스턴스만 다중 연결할 수 있습니다.
 
-반드시 cluster-aware 파일 시스템을 사용해야합니다. (not XFS, EX4 etc..)
+반드시 `cluster-aware 파일 시스템`을 사용해야합니다. (not XFS, EX4 etc..)
+
+## EBS Encrpytion
+
+암호화된 EBS 볼륨을 생성하면 다음과 같은 차이점이 있습니다.
+* 볼륨에 저장되는 모든 데이터가 암호화됩니다.
+* 인스턴스와 볼륨간의 전송데이터도 암호화됩니다.
+* 스냅샷과 해당 스냅샷으로 생성된 볼륨도 암호화됩니다.
+
+EBS의 암호화는 KMS를 사용하여 AES-256 암호화 표준을 갖습니다.
+
+EBS의 암호화 및 복호화는 백그라운드에서 EC2와 EBS가 처리하기 때문에 사용자가 직접 관리할 필요가 없고, 암호화된 EBS 볼륨은 암호화되지 않은 볼륨과 동일한 성능을 제공합니다.
+
+추가로 암호화되지 않은 스냅샷으로 생성한 볼륨을 암호화할 수 있습니다.
 
 ## AMI (Amazon Machine Image)
 
@@ -164,12 +178,11 @@ AMI는 특정 지역에 구축해야하고 다른 지역으로 복사할 수 있
 
 ## EC2 Instance Store
 
-만약 높은 디스크 성능이 필요하면 EC2 인스턴스 스토어를 사용할 수 있습니다.
+만약 높은 디스크 성능이 필요하면 `EC2 인스턴스 스토어`를 사용할 수 있습니다.
 
 EC2 인스턴스 스토어를 사용하면 해당 서버에 물리적으로 연결된 디스크를 갖습니다.
 이때 연결된 디스크를 `Instance Store`라고 합니다.
 
-Instance Store는 더 나은 I/O 성능을 제공하지만, 데이터는 인스턴스가 종료되면 사라집니다.
-따라서 임시 데이터를 저장하는 용도로 사용합니다. (e.g. cache, buffer, scratch data)
+Instance Store는 더 나은 `I/O 성능`을 제공하지만, 데이터는 인스턴스가 종료되면 사라집니다. 따라서 `임시 데이터를 저장하는 용도`로 사용합니다. (e.g. cache, buffer, scratch data)
 
-
+ 
