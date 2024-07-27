@@ -13,6 +13,9 @@
     - [Health Check](#health-check)
     - [Types of ELB](#types-of-elb)
     - [Security Groups for ELB](#security-groups-for-elb)
+  - [ALB](#alb)
+    - [Target Groups](#target-groups)
+    - [Good to Know](#good-to-know)
 
 ## Scalability and High Availability
 
@@ -132,3 +135,46 @@ ELB에는 3가지(~~4가지~~) 타입이 있습니다.
 | Type | Protocol | Port Range |  Source  | Description |
 |------|----------|------------|----------|-------------|
 | HTTP |    TCP   |     80     | sg-xxxxxx | Allowing HTTP traffic from ELB |
+
+## ALB
+
+ALB는 Application Load Balancer의 약자로, 7 계층(Layer 7)에서 동작하는 로드 밸런서입니다.
+
+![alb_example.png](images%2Falb_example.png)
+
+Load Balancing to multiple HTTP applications across machines (`target groups`).
+여러 머신(대상 그룹)에서 여러 HTTP 애플리케이션에 대한 부하 분산을 수행합니다. 또한 하나의 인스턴스 내의 여러 어플리케이션에 대해서도 부하 분산을 수행할 수 있습니다.
+
+HTTP/2.0, WebSocket을 지원합니다. redirects를 지원하기 때문에 HTTP를 HTTPS로 변환하는 데 사용할 수 있습니다.
+
+대상 그룹(target groups)에 대한 라우팅 테이블을 기반으로 라우팅을 할 수 있습니다. 이때 URL의 경로, 호스트 이름, 쿼리 파리미터 혹은 HTTP 헤더를 기반으로 라우팅할 수 있습니다.
+
+* URL: `/users`, `/posts` 등
+* one.example.com, two.example.com
+* 쿼리 파라미터: `example.com?user=123`
+
+ALB는 Docker나 ECS 등 마이크로서비스나 컨테이너 기반 어플리케이션에 적합합니다.
+
+포트 매핑 기능이 있기 때문에 EC2 인스턴스의 동적 포트로 리다이렉트할 수 있습니다.
+
+### Target Groups
+
+Target Group은 ALB로 라우팅되는 대상입니다.
+
+대상 그룹으로 라우팅 되는 대상은 다음과 같습니다.
+* EC2 인스턴스
+* ECS tasks
+* Lambda functions
+* IP addresses
+
+ALB는 여러 대상 그룹을 가질 수 있습니다.
+
+헬스 체크는 대상 그룹마다 설정할 수 있습니다.
+
+### Good to Know
+
+로드 밸런서를 사용하면 고정 호스트 이름이 부여됩니다.
+
+어플리케이션 서버는 클라이언트의 IP를 직접 보지 못하고, `X-Forwarded-For` 헤더를 통해 클라이언트의 IP를 확인할 수 있습니다. `X-Forwarded-Port`, `X-Forwarded-Proto` 헤더도 사용할 수 있습니다.
+
+
