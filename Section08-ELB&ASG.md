@@ -25,6 +25,7 @@
   - [Cross-Zone Load Balancing](#cross-zone-load-balancing)
   - [SSL](#ssl)
     - [SNI(Server Name Indication)](#sniserver-name-indication)
+  - [Deregistration Delay (Connection Draining)](#deregistration-delay-connection-draining)
 
 ## Scalability and High Availability
 
@@ -313,3 +314,12 @@ SNI는 최초 TLS 핸드셰이크에서 클라이언트가 요청하는 호스�
 
 SNI는 ALB, NLB, CloudFront에서만 지원됩니다.
 
+## Deregistration Delay (Connection Draining)
+
+Deregistration Delay 혹은 Connection Draining은 인스턴스가 종료되거나 비활성화되기 전에 로드 밸런서에서 트래픽을 제거하는 시간을 의미합니다.
+
+![deregistration_delay](images%2Fderegistration_delay.png)
+
+로드 밸런서는 인스턴스가 종료되거나 비활성화되기 전에 트래픽을 제거하여 서버에 대한 요청을 완료할 수 있도록 합니다. 이후에 새로운 요청은 다른 인스턴스로 전달됩니다.
+
+Deregistration Delay는 1초부터 3600초(1시간)까지 설정할 수 있습니다. 0초로 설정하면 Deregistration Delay을 비활성화하고 로드 밸런서는 즉시 트래픽을 제거합니다.
