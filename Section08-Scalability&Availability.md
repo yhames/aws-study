@@ -105,9 +105,9 @@ ELB는 AWS가 업그레이드와 유지보수 및 고가용성을 관리하므�
 
 ## Types of ELB
 
-ELB에는 4가지 타입이 있습니다.
+ELB에는 3가지(~~4가지~~) 타입이 있습니다.
 
-* Classic Load Balancer(CLB): HTTP, HTTPS, TCP 프로토콜과 SSL 암호화를 지원합니다.
+* CLB는 더 이상 AWS에서 지원하지 않습니다. ~~Classic Load Balancer(CLB): HTTP, HTTPS, TCP 프로토콜과 SSL 암호화를 지원합니다.~~
 * Application Load Balancer(ALB): HTTP, HTTPS, WebSocket 프로토콜을 지원합니다.
 * Network Load Balancer(NLB): TCP, TLS, UDP 프로토콜을 지원합니다.
 * Gateway Load Balancer(GWLB): IP 프로토콜과 3계층 라우팅을 지원합니다.
