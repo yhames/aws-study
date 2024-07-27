@@ -29,6 +29,11 @@
 - [ASG](#asg)
     - [Launch Template](#launch-template)
     - [ASG with CloudWatch](#asg-with-cloudwatch)
+  - [Scaling Policies](#scaling-policies)
+    - [Dynamic Scaling Policies](#dynamic-scaling-policies)
+    - [Predictive Scaling](#predictive-scaling)
+    - [Good Metrics](#good-metrics)
+    - [Scaling Cooldown](#scaling-cooldown)
 
 ## Scalability and High Availability
 
@@ -362,3 +367,50 @@ ASG는 CloudWatch와 통합하여 트래픽을 모니터링하고, 트래픽에 
 ![asg_cloudwatch.png](images%2Fasg_cloudwatch.png)
 
 CloudWatch는 모니터링하여 CPU 사용량과 같은 메트릭(Metric)을 수집하고, 이를 기반으로 알람을 설정합니다. ASG와 CloudWatch를 통합하면 CPU 사용량이 증가하는 경우 발생하는 알람을 트리거로 인스턴스를 추가하거나 제거할 수 있습니다.
+
+## Scaling Policies
+
+### Dynamic Scaling Policies
+
+> [Dynamic scaling for Amazon EC2 Auto Scaling](https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scale-based-on-demand.html)  
+> [Scheduled scaling for Amazon EC2 Auto Scaling](https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-scheduled-scaling.html)
+
+* *Target Tracking Scaling
+
+Target Tracking Scaling은 CloudWatch `metric를` 통해 특정 지표를 기준으로 인스턴스의 수를 조절하는 방법입니다.
+
+* Simple/Step Scaling
+
+Simple/Step Scaling은 CloudWatch `alarm`를 통해 특정 지표를 기준으로 인스턴스의 수를 조절하는 방법입니다.
+
+* Scheduled Actions
+
+Scheduled Actions은 사용자 패턴을 기반으로 확장을 예약하는 방법입니다.
+예를들어 매주 금요일 10-5시에 이벤트를 진행하는 경우, 매주 금요일 10시에 인스턴스를 추가하고 5시에 인스턴스를 제거하는 예약을 정의할 수 있습니다.
+
+### Predictive Scaling
+
+Predictive Scaling은 CloudWatch의 `예측`을 통해 트래픽을 분석하고 예측하여 스케일링 작업을 예약하는 방법입니다.
+
+### Good Metrics
+
+> [Amazon EC2 Auto Scaling의 대상 추적 조정 정책 - 지표선택](https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/as-scaling-target-tracking.html)
+
+스케일링을 판단하기 위한 메트릭은 다음과 같습니다.
+
+* `ASGAverageCPUUtilization` - Auto Scaling 그룹의 평균 CPU 사용률.
+* `ALBRequestCountPerTarget` - 대상당 평균 Application Load Balancer 요청 수
+* `ASGAverageNetworkIn` - 모든 네트워크 인터페이스에서 단일 인스턴스가 받은 평균 바이트 수
+* `ASGAverageNetworkOut` - 모든 네트워크 인터페이스에서 단일 인스턴스가 보낸 평균 바이트 수
+
+추가로 사용자 지정 지표를 사용하여 대상 추적 크기 조정 정책을 생성할 수 있습니다.
+
+### Scaling Cooldown
+
+Scaling Cooldown은 스케일링 작업을 수행한 후 다음 스케일링 작업을 수행하기 전에 휴지 시간을 갖는 것 입니다. (Default: 300 seconds)
+
+ASG를 통해 추가되거나 삭제된 인스턴스가 안정화된 후 새로운 메트릭을 수집하기 위해서 Cooldown 시간 동안은 ASG가 추가 스케일링 작업을 수행할 수 없습니다.
+
+Scaling Action이 발생하면 먼저 Cooldown이 발생했는지를 먼저 확인한 후 스케일링 작업을 수행하고, 만약 Cooldown이 발생했다면 해당 Scaling Action은 무시됩니다.
+
+AMI를 사용하면 인스턴스를 구성하는데 필요한 시간이 단축되기 때문에 Cooldown 시간도 단축될 수 있습니다.
