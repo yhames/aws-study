@@ -22,6 +22,7 @@
     - [Target Groups](#target-groups-2)
   - [Sticky Sessions](#sticky-sessions)
     - [Cookie](#cookie)
+  - [Cross-Zone Load Balancing](#cross-zone-load-balancing)
 
 ## Scalability and High Availability
 
@@ -275,7 +276,17 @@ Sticky Session에는 Application-based 쿠키와 Duration-Based 쿠키가 있습
   * 로드 밸런서에서 생성한 쿠키를 사용합니다.
   * 쿠키 이름은 AWSALB입니다.
 
+## Cross-Zone Load Balancing
 
+Cross-Zone Load Balancing을 사용하면 로드 밸런서가 여러 가용 영역에 걸쳐 있는 인스턴스로 트래픽을 분산시킬 수 있습니다.
+
+![cross_zone.png](images%2Fcross_zone.png)
+
+위 사진에서 좌측(cross-zone enabled)은 로드 밸런서가 모든 가용 영역에 있는 인스턴스로 트래픽을 분산시키는 것을 보여줍니다. 반면 우측(cross-zone disabled)은 로드 밸런서가 같은 가용 영역에 있는 인스턴스로만 트래픽을 분산시킵니다.
+
+ALB에서 Cross-Zone Load Balancing은 기본적으로 활성화되어 있고, 대상 그룹 설정에서 비활성화할 수 있습니다. Cross-Zone 설정이 기본값이기 때문에 별도의 inter-AZ 비용은 지불하지 않아도 됩니다.
+
+NLB와 GWLB에서는 Cross-Zone Load Balancing이 기본적으로 비활성화되어 있습니다. 따라서 Cross-Zone을 사용하면 별도의 inter-AZ 비용을 지불해야 합니다.
 
 
 
