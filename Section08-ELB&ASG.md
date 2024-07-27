@@ -1,21 +1,24 @@
-# Scalability and High Availability
+# ELB & ASG
 
-- [Scalability and High Availability](#scalability-and-high-availability)
-  - [Scalability](#scalability)
-    - [Vertical Scaling](#vertical-scaling)
-    - [Horizontal Scaling](#horizontal-scaling)
-  - [High Availability](#high-availability)
-  - [정리](#정리)
-- [ELB](#elb)
-  - [Load Balancer](#load-balancer)
-  - [Why ELB?](#why-elb)
-  - [Health Check](#health-check)
-  - [Types of ELB](#types-of-elb)
-  - [Security Groups for ELB](#security-groups-for-elb)
+- [ELB \& ASG](#elb--asg)
+  - [Scalability and High Availability](#scalability-and-high-availability)
+    - [Scalability](#scalability)
+      - [Vertical Scaling](#vertical-scaling)
+      - [Horizontal Scaling](#horizontal-scaling)
+    - [High Availability](#high-availability)
+    - [정리](#정리)
+  - [ELB](#elb)
+    - [Load Balancer](#load-balancer)
+    - [Why ELB?](#why-elb)
+    - [Health Check](#health-check)
+    - [Types of ELB](#types-of-elb)
+    - [Security Groups for ELB](#security-groups-for-elb)
+
+## Scalability and High Availability
 
 확장성(Scalability)과 고가용성(High Availability)은 모두 시스템의 성능을 향상시키는 방법이지만, 서로 다른 목표를 가지고 있습니다.
 
-## Scalability
+### Scalability
 
 확장성은 시스템이 더 많은 요청을 처리할 수 있는 능력을 의미합니다.
 이는 더 많은 사용자가 서비스를 사용할 수 있도록 하는 것을 의미합니다.
@@ -26,7 +29,7 @@
    * 탄력성(Elasticity)이라고도 불립니다.
 
 
-### Vertical Scaling
+#### Vertical Scaling
 
 수직 확장은 단일 서버의 성능을 향상시키는 것입니다.
 
@@ -36,7 +39,7 @@
 
 그러나 하드웨어의 제한이 있기 때문에 수직 확장은 한계가 있습니다.
 
-### Horizontal Scaling
+#### Horizontal Scaling
 
 수평 확장은 여러 서버를 추가하여 시스템의 성능을 향상시키는 것입니다.
 
@@ -44,7 +47,7 @@
 
 EC2를 사용하면 인스턴스를 추가하거나 Auto Scaling을 사용하여 수평 확장을 할 수 있습니다.
 
-## High Availability
+### High Availability
 
 고가용성은 시스템이 장애가 발생해도 계속해서 서비스를 제공할 수 있는 능력입니다.
 
@@ -57,8 +60,7 @@ EC2를 사용하면 인스턴스를 추가하거나 Auto Scaling을 사용하여
 * 수동적인 방법 e.g. RDS Multi-AZ
 * 능동적인 방법 e.g. horizontal scaling
 
- 
-## 정리
+### 정리
 
 * Vertical Scaling: 단일 서버의 성능 향상
   * e.g. t2.micro -> t2.large
@@ -67,9 +69,9 @@ EC2를 사용하면 인스턴스를 추가하거나 Auto Scaling을 사용하여
 * High Availability: 시스템이 장애가 발생해도 계속해서 서비스를 제공할 수 있는 능력
   * e.g. Auto Scaling Group with multiple AZ, Load Balancer with multiple AZ
 
-# ELB
+## ELB
 
-## Load Balancer
+### Load Balancer
 
 로드 밸런서는 트래픽을 여러 서버로 분산시켜 서버의 부하를 분산시키는 역할을 합니다.
 
@@ -84,7 +86,7 @@ EC2를 사용하면 인스턴스를 추가하거나 Auto Scaling을 사용하여
 * 여러 AZ를 사용하여 고가용성을 확보할 수 있습니다.
 * 클라우드 내 공개 트래픽과 비공개 트래픽을 분리할 수 있습니다.
 
-## Why ELB?
+### Why ELB?
 
 ELB는 관리형 서비스로서 사용자가 로드 밸런서를 관리할 필요가 없습니다.
 오직 로드 밸런서를 생성하고 설정만 하면 됩니다.
@@ -93,7 +95,7 @@ ELB는 AWS가 업그레이드와 유지보수 및 고가용성을 관리하므�
 또한 Auto Scaling과 통합되어 Auto Scaling 그룹의 인스턴스를 자동으로 관리할 수 있습니다.
 그 외에도 EC2, ECS, Lambda, S3, CloudFront 등 AWS 서비스와 통합되어 사용할 수 있습니다.
 
-## Health Check
+### Health Check
 
 헬스 체크는 로드 밸런서가 서버가 정상적으로 동작하는지 확인하는 방법입니다.
 
@@ -103,7 +105,7 @@ ELB는 AWS가 업그레이드와 유지보수 및 고가용성을 관리하므�
 
 헬스체크는 포트와 라우트에서 이뤄집니다. (대부분 `/health`)
 
-## Types of ELB
+### Types of ELB
 
 ELB에는 3가지(~~4가지~~) 타입이 있습니다.
 
@@ -112,7 +114,7 @@ ELB에는 3가지(~~4가지~~) 타입이 있습니다.
 * Network Load Balancer(NLB): TCP, TLS, UDP 프로토콜을 지원합니다.
 * Gateway Load Balancer(GWLB): IP 프로토콜과 3계층 라우팅을 지원합니다.
 
-## Security Groups for ELB
+### Security Groups for ELB
 
 ![elb_security.png](images%2Felb_security.png)
 
