@@ -1,13 +1,13 @@
-# ELB & ASG
+# ELB
 
-- [ELB \& ASG](#elb--asg)
+- [ELB](#elb)
   - [Scalability and High Availability](#scalability-and-high-availability)
     - [Scalability](#scalability)
       - [Vertical Scaling](#vertical-scaling)
       - [Horizontal Scaling](#horizontal-scaling)
     - [High Availability](#high-availability)
     - [정리](#정리)
-  - [ELB](#elb)
+  - [ELB](#elb-1)
     - [Load Balancer](#load-balancer)
     - [Why ELB?](#why-elb)
     - [Health Check](#health-check)
@@ -26,6 +26,9 @@
   - [SSL](#ssl)
     - [SNI(Server Name Indication)](#sniserver-name-indication)
   - [Deregistration Delay (Connection Draining)](#deregistration-delay-connection-draining)
+- [ASG](#asg)
+    - [Launch Template](#launch-template)
+    - [ASG with CloudWatch](#asg-with-cloudwatch)
 
 ## Scalability and High Availability
 
@@ -323,3 +326,39 @@ Deregistration Delay 혹은 Connection Draining은 인스턴스가 종료되거�
 로드 밸런서는 인스턴스가 종료되거나 비활성화되기 전에 트래픽을 제거하여 서버에 대한 요청을 완료할 수 있도록 합니다. 이후에 새로운 요청은 다른 인스턴스로 전달됩니다.
 
 Deregistration Delay는 1초부터 3600초(1시간)까지 설정할 수 있습니다. 0초로 설정하면 Deregistration Delay을 비활성화하고 로드 밸런서는 즉시 트래픽을 제거합니다.
+
+
+# ASG
+
+현실에서는 웹 서비스나 어플리케이션의 트래픽은 일정하지 않습니다.
+따라서 서버의 수를 유동적으로 조절할 수 있어야 합니다.
+
+AWS에서는 EC2 인스턴스를 생성하는 API를 호출하여 빠르게 서버를 생성하고 종료할 수 있습니다. ASG(Auto Scaling Group)는 이러한 작업을 자동화하여 서버의 수를 유동적으로 조절할 수 있습니다.
+
+ASG는 트래픽에 맞춰서 인스턴스를 추가하거나 제거하여 서버의 수를 조절합니다. 또한 인스턴스의 최대 수와 최소 수를 설정하여 서버의 수를 제한할 수 있습니다.
+
+![asg_lb.png](images%2Fasg_lb.png)
+
+ASG는 로드 밸런서와 통합하면 ASG에 속한 모든 인스턴스가 로드 밸런서에 등록되어 트래픽을 분산시킬 수 있습니다.
+
+또한 인스턴스가 비정상적으로 종료되면 ASG는 해당 인스턴스를 제거하고 새로운 인스턴스를 생성하여 서버의 수를 유지합니다.
+
+ASG는 무료이며 사용한 인스턴스만 비용을 지불하면 됩니다.
+
+### Launch Template
+
+ASG는 인스턴스를 생성할 때 사용하는 템플릿인 Launch Template을 사용합니다.
+
+![launch_template.png](images%2Flaunch_template.png)
+
+Launch Template은 인스턴스의 AMI, 인스턴스 유형, 보안 그룹, 키 페어, 사용자 데이터 등을 설정할 수 있습니다.
+
+Launch Template 생성할 때 Min, Max, Initial Size를 설정해야하고, Scaling Policy를 설정해야합니다.
+
+### ASG with CloudWatch
+
+ASG는 CloudWatch와 통합하여 트래픽을 모니터링하고, 트래픽에 따라 인스턴스를 추가하거나 제거할 수 있습니다.
+
+![asg_cloudwatch.png](images%2Fasg_cloudwatch.png)
+
+CloudWatch는 모니터링하여 CPU 사용량과 같은 메트릭(Metric)을 수집하고, 이를 기반으로 알람을 설정합니다. ASG와 CloudWatch를 통합하면 CPU 사용량이 증가하는 경우 발생하는 알람을 트리거로 인스턴스를 추가하거나 제거할 수 있습니다.
