@@ -32,6 +32,7 @@
   - [Scaling Policies](#scaling-policies)
     - [Dynamic Scaling Policies](#dynamic-scaling-policies)
     - [Predictive Scaling](#predictive-scaling)
+    - [Scheduled Actions](#scheduled-actions)
     - [Good Metrics](#good-metrics)
     - [Scaling Cooldown](#scaling-cooldown)
 
@@ -383,14 +384,14 @@ Target Tracking Scaling은 CloudWatch `metric를` 통해 특정 지표를 기준
 
 Simple/Step Scaling은 CloudWatch `alarm`를 통해 특정 지표를 기준으로 인스턴스의 수를 조절하는 방법입니다.
 
-* Scheduled Actions
-
-Scheduled Actions은 사용자 패턴을 기반으로 확장을 예약하는 방법입니다.
-예를들어 매주 금요일 10-5시에 이벤트를 진행하는 경우, 매주 금요일 10시에 인스턴스를 추가하고 5시에 인스턴스를 제거하는 예약을 정의할 수 있습니다.
-
 ### Predictive Scaling
 
 Predictive Scaling은 CloudWatch의 `예측`을 통해 트래픽을 분석하고 예측하여 스케일링 작업을 예약하는 방법입니다.
+
+### Scheduled Actions
+
+Scheduled Actions은 사용자 패턴을 기반으로 확장을 예약하는 방법입니다.
+예를들어 매주 금요일 10-5시에 이벤트를 진행하는 경우, 매주 금요일 10시에 인스턴스를 추가하고 5시에 인스턴스를 제거하는 예약을 정의할 수 있습니다.
 
 ### Good Metrics
 
