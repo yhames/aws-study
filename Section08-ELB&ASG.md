@@ -18,6 +18,8 @@
     - [Good to Know](#good-to-know)
   - [NLB](#nlb)
     - [Target Groups](#target-groups-1)
+  - [GWLB](#gwlb)
+    - [Target Groups](#target-groups-2)
 
 ## Scalability and High Availability
 
@@ -210,3 +212,34 @@ NLB로 라우팅되는 대상은 다음과 같습니다.
 
 NLB의 헬스체크는 TCP, HTTP, HTTPS 프로토콜을 지원합니다.
 
+## GWLB
+
+GWLB는 Gateway Load Balancer의 약자로, 3계층(Layer 3)에서 동작하는 로드 밸런서입니다.
+
+Deploy, scale, and manage a fleet of third-party network virtual appliances in AWS.  
+Example: firewall, intrusion detection, prevention systems, deep packet inspection, etc.
+
+GWLB를 사용하면 AWS에서 제공하는 서드파티 네트워크 가상 애플라이언스(firewall, 침입 탐지 및 방지 시스템, 딥 패킷 검사 등)를 배포, 확장 및 관리할 수 있습니다.
+
+![gwlb_example.png](images%2Fgwlb_example.png)
+
+GWLB는 IP 프로토콜과 3계층 라우팅을 지원합니다.
+
+GWLB는 다음과 같은 기능을 제공합니다.
+* Transparent Network Gateway
+  * VCP(Virtual Private Cloud)의 모든 트래픽을 단일 엔트리 포인트(GWLB)로 관리
+* Load Balancer
+  * 여러 대상 그룹으로 트래픽을 분산
+
+> uses the GENEVE 프로토콜 with 6081 port
+
+### Target Groups
+
+![gwlb_target_groups.png](images%2Fgwlb_target_groups.png)
+
+GWLB의 대상 그룹은 다음과 같습니다.
+
+* EC2 인스턴스
+* IP addresses
+  * must be hard coded
+  * must be private IP addresses
