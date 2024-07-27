@@ -16,6 +16,8 @@
   - [ALB](#alb)
     - [Target Groups](#target-groups)
     - [Good to Know](#good-to-know)
+  - [NLB](#nlb)
+    - [Target Groups](#target-groups-1)
 
 ## Scalability and High Availability
 
@@ -142,6 +144,8 @@ ALB는 Application Load Balancer의 약자로, 7 계층(Layer 7)에서 동작하
 
 ![alb_example.png](images%2Falb_example.png)
 
+ALB는 7계층 로드밸런서로서 HTTP, HTTPS, WebSocket 프로토콜을 지원합니다.
+
 Load Balancing to multiple HTTP applications across machines (`target groups`).
 여러 머신(대상 그룹)에서 여러 HTTP 애플리케이션에 대한 부하 분산을 수행합니다. 또한 하나의 인스턴스 내의 여러 어플리케이션에 대해서도 부하 분산을 수행할 수 있습니다.
 
@@ -176,5 +180,35 @@ ALB는 여러 대상 그룹을 가질 수 있습니다.
 로드 밸런서를 사용하면 고정 호스트 이름이 부여됩니다.
 
 어플리케이션 서버는 클라이언트의 IP를 직접 보지 못하고, `X-Forwarded-For` 헤더를 통해 클라이언트의 IP를 확인할 수 있습니다. `X-Forwarded-Port`, `X-Forwarded-Proto` 헤더도 사용할 수 있습니다.
+
+## NLB
+
+NLB는 Network Load Balancer의 약자로, 4 계층(Layer 4)에서 동작하는 로드 밸런서입니다.
+
+NLB는 4계층 로드밸런서로서 TCP, TLS, UDP 프로토콜을 지원합니다.
+
+NLB는 초당 수백만건의 요청을 처리할 수 있고, 지연시간도 100ms 이하로 매우 짧습니다. (ALB는 400ms 이하)
+
+NLB는 가용 영역 별로 고정 IP를 제공하며, Elastic IP를 사용할 수도 있습니다.
+
+따라서 NLB는 고성능이나 TCP, UDP 트래픽을 처리해야 하는 경우에 사용됩니다.
+
+AWS Free Tier에서는 NLB를 사용할 수 없습니다.
+
+### Target Groups
+
+NLB로 라우팅되는 대상은 다음과 같습니다.
+
+![nlb_target_groups.png](images%2Fnlb_target_groups.png)
+
+* EC2 인스턴스
+* IP addresses
+  * must be hard coded
+  * must be private IP addresses
+* ALB
+  * for static IP addresses
+
+NLB의 헬스체크는 TCP, HTTP, HTTPS 프로토콜을 지원합니다.
+
 
 
