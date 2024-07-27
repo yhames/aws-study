@@ -23,6 +23,8 @@
   - [Sticky Sessions](#sticky-sessions)
     - [Cookie](#cookie)
   - [Cross-Zone Load Balancing](#cross-zone-load-balancing)
+  - [SSL](#ssl)
+    - [SNI(Server Name Indication)](#sniserver-name-indication)
 
 ## Scalability and High Availability
 
@@ -230,7 +232,7 @@ GWLB는 IP 프로토콜과 3계층 라우팅을 지원합니다.
 
 GWLB는 다음과 같은 기능을 제공합니다.
 * Transparent Network Gateway
-  * VCP(Virtual Private Cloud)의 모든 트래픽을 단일 엔트리 포인트(GWLB)로 관리
+  * VPC(Virtual Private Cloud)의 모든 트래픽을 단일 엔트리 포인트(GWLB)로 관리
 * Load Balancer
   * 여러 대상 그룹으로 트래픽을 분산
 
@@ -288,6 +290,26 @@ ALB에서 Cross-Zone Load Balancing은 기본적으로 활성화되어 있고, �
 
 NLB와 GWLB에서는 Cross-Zone Load Balancing이 기본적으로 비활성화되어 있습니다. 따라서 Cross-Zone을 사용하면 별도의 inter-AZ 비용을 지불해야 합니다.
 
+## SSL
 
+![ssl_lb.png](images%2Fssl_lb.png)
 
+ELB는 SSL을 사용하여 암호화된 트래픽을 처리할 수 있습니다.
+ELB에서는 X.509 인증서를 사용하여 SSL을 구현합니다.
+인증서는 ACM(AWS Certificate Manager)을 사용하거나, 직접 발급받은 업로드하여 사용할 수 있습니다.
+
+HTTPS listener를 생성하면 기본 인증서를 설정해야합니다.
+다중 도메인을 지원하기 위해 다른 인증서를 추가할 수 있습니다.
+클라이언트는 SNI(Server Name Indication)를 사용하여 여러 도메인을 지원하는 서버에 연결할 수 있습니다.
+또한 보안 정책을 설정하여 SSL/TLS 프로토콜 버전을 지정할 수 있습니다.
+
+### SNI(Server Name Indication)
+
+SNI는 하나의 서버에 존재하는 여러개의 서버들이 각기 다른 TLS 인증서를 사용할 수 있도록 하는 TLS 확장입니다.
+
+![sni_example.png](images%2Fsni_example.png)
+
+SNI는 최초 TLS 핸드셰이크에서 클라이언트가 요청하는 호스트 이름을 전송합니다. 서버는 이 호스트 이름을 기반으로 적절한 인증서를 선택하여 클라이언트에게 제공합니다.
+
+SNI는 ALB, NLB, CloudFront에서만 지원됩니다.
 
