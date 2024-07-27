@@ -20,6 +20,8 @@
     - [Target Groups](#target-groups-1)
   - [GWLB](#gwlb)
     - [Target Groups](#target-groups-2)
+  - [Sticky Sessions](#sticky-sessions)
+    - [Cookie](#cookie)
 
 ## Scalability and High Availability
 
@@ -243,3 +245,38 @@ GWLB의 대상 그룹은 다음과 같습니다.
 * IP addresses
   * must be hard coded
   * must be private IP addresses
+
+## Sticky Sessions
+
+![sticky_session.png](images%2Fsticky_session.png)
+
+Sticky Session 혹은 stickiness는 ALB(Application Load Balancer)에서 사용자가 한 번 로드 밸런서에 연결되면 동일한 서버로 계속 연결되는 것을 의미합니다.
+
+Sticky Session을 위해서 로드 밸런서는 Cookie를 사용합니다. 이때 사용자는 동일한 서버로 연결되지만, 다른 사용자는 다른 서버로 연결될 수 있습니다.
+
+Sticky Session은 사용자가 로그인한 상태를 유지하거나 쇼핑카트를 유지하는 데 사용됩니다.
+
+Sticky Session는 인스턴스 부하의 불균형을 초래할 수 있습니다.
+
+### Cookie
+
+Sticky Session에는 Application-based 쿠키와 Duration-Based 쿠키가 있습니다.
+
+* Application-based 쿠키
+  * Custom 쿠키
+    * 인스턴스(혹은 대상그룹의 대상)에서 생성한 쿠키를 사용합니다.
+    * 서버에서 추가적인 속성을 포함시킬 수 있습니다.
+    * 쿠키 이름은 각 대상 그룹 별로 개별적으로 지정해야하며
+    * 쿠키 이름은 AWSALB, AWSALBAPP, AWSALBTG는 이미 예약되어 있으므로 사용할 수 없습니다.
+  * Application 쿠키
+    * 로드 밸런서에서 생성한 쿠키를 사용합니다.
+    * 쿠키 이름은 AWSALBAPP입니다.
+* Duration-Based 쿠키
+  * 로드 밸런서에서 생성한 쿠키를 사용합니다.
+  * 쿠키 이름은 AWSALB입니다.
+
+
+
+
+
+
