@@ -26,7 +26,9 @@
   - [ElastiCache Solution Architecture](#elasticache-solution-architecture)
     - [DB Cache](#db-cache)
     - [Session Store](#session-store)
+    - [Game Leaderboard](#game-leaderboard)
   - [Redis vs Memcached](#redis-vs-memcached)
+  - [ElastiCache Security](#elasticache-security)
 
 ## RDS란?
 
@@ -329,6 +331,14 @@ RDS의 쿼리 결과를 캐시하여 데이터베이스에 대한 쿼리 수를 
 
 세션 스토어는 사용자의 정보를 저장하여 로그인 상태를 유지하는 방법입니다.
 
+### Game Leaderboard
+
+![elasticache_leaderboard.png](images/elasticache_leaderboard.png)
+
+Redis의 Sorted Sets를 사용하여 게임 리더보드를 구현할 수 있습니다.
+Sorted Sets에서는 각 요소가 Unique하며, Order가 있습니다.
+이를 이용한면 새로운 요소가 추가되면 실시간으로 순위를 추가할 수 있습니다.
+
 ## Redis vs Memcached
 
 ![redis_memcache.png](images/redis_memcache.png)
@@ -346,4 +356,14 @@ RDS의 쿼리 결과를 캐시하여 데이터베이스에 대한 쿼리 수를 
   * No backup and restore
   * Multi-threaded architecture
 
+## ElastiCache Security
 
+ElastiCache는 Redis에서만 IAM 인증을 지원합니다. 나머지의 경우에는 사용자 이름과 비밀번호를 사용하여 인증합니다.
+
+ElastiCache에서 IAM 정책을 정의하면, AWS API-level 보안을 제공합니다.
+* Redis AUTH
+  * 비밀번호와 토큰을 사용하여 인증합니다. 
+  * SSL과 In-flight Encryption을 지원합니다.
+* Memcached
+* IAM
+  * `SASL` 기반 인증을 제공합니다.
