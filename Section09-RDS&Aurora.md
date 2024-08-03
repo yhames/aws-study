@@ -11,8 +11,8 @@
   - [Auto Scaling](#auto-scaling)
   - [Custom Endpoints](#custom-endpoints)
   - [Serverless](#serverless)
-    - [Global](#global)
-    - [Machine Learning](#machine-learning)
+  - [Global](#global)
+  - [Machine Learning](#machine-learning)
 
 ## RDS란?
 
@@ -162,7 +162,7 @@ Aurora Serverless는 서버리스 데이터베이스 서비스로, 프록시 플
 
 실제 사용량에 따라 데이터 베이스가 auto-scaling되기 때문에 비용이 효율적이므로 업무량을 예측하기 어려운 경우에 사용합니다.
 
-### Global
+## Global
 
 ![aurora_global.png](images/aurora_global.png)
 
@@ -172,7 +172,7 @@ Global Aurora는 Aurora Cross-Region Replicas라고 불립니다.
 
 평균적으로 Aurora Global Database에서 `다른 리전으로 데이터를 복제하는데 1초 이하의 시간`이 걸립니다.
 
-### Machine Learning
+## Machine Learning
 
 ![aurora_ml.png](images/aurora_ml.png)
 
