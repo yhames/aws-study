@@ -22,6 +22,11 @@
     - [Database Cloning](#database-cloning)
 - [Security](#security)
 - [Proxy](#proxy)
+- [ElastiCache](#elasticache)
+  - [ElastiCache Solution Architecture](#elasticache-solution-architecture)
+    - [DB Cache](#db-cache)
+    - [Session Store](#session-store)
+  - [Redis vs Memcached](#redis-vs-memcached)
 
 ## RDS란?
 
@@ -289,3 +294,56 @@ RDS Proxy는 오토 스케일링을 지원하므로 용량을 관리할 필요�
 마지막으로 RDS Proxy를 통해서만 RDS에 접근하기 위해서 IAM 인증을 강제하면 보안을 더 강화할 수 있습니다.
 
 RDS Proxy는 public access가 절대 불가능합니다. 반드시 VPC 내에서만 사용할 수 있습니다.
+
+# ElastiCache
+
+ElasitCache는 인메모리 데이터 스토어 서비스입니다.
+
+ElasitCache는 Redis와 Memcached를 지원합니다.
+
+Caches는 매우 높은 성능과 짧은 지연 시간을 가진 인메모리 데이터베이스입니다.
+
+캐시를 사용하면 데이터베이스에 대한 쿼리 수를 줄이고, 데이터베이스의 부하를 줄일 수 있습니다.
+
+ElastiCache를 사용하면 패치, 최적화, 설정, 구성, 모니터링 장애복구 등 RDS와 같이 AWS에서 관리합니다.
+
+ElastiCache를 사용하기 위해서는 해당 캐시를 쿼리하도록 어플리케이션 코드를 변경해야합니다.
+
+## ElastiCache Solution Architecture
+
+### DB Cache
+
+![elasticache_db.png](images/elasticache_db.png)
+
+RDS의 쿼리 결과를 캐시하여 데이터베이스에 대한 쿼리 수를 줄이고, 데이터베이스의 부하를 줄이는 방법입니다.
+
+캐시 히트가 발생하면 캐시에서 쿼리를 수행합니다.
+
+캐시 미스가 발생하면 데이터베이스에 쿼리를 수행하고, 쿼리 결과를 캐시에 저장하여 다음에 쿼리할 때 캐시 히트가 발생하도록 합니다.
+
+캐시 무효화 전략이 필요합니다. 캐시 무효화 전략은 데이터베이스에 데이터가 변경되면 최신 데이터를 제공하기 위해 캐시를 무효화하는 전략입니다.
+
+### Session Store
+
+![elasticache_session.png](images/elasticache_session.png)
+
+세션 스토어는 사용자의 정보를 저장하여 로그인 상태를 유지하는 방법입니다.
+
+## Redis vs Memcached
+
+![redis_memcache.png](images/redis_memcache.png)
+
+* Redis
+  * Multi-AZ with Auto-Failover
+  * Read Replicas
+  * AOF Persistence
+  * Backup and Restore
+  * Supports Sets and Sorted Sets
+* Memcached
+  * Multi-node for partitioning (Sharding)
+  * No Replicas
+  * Non persistent
+  * No backup and restore
+  * Multi-threaded architecture
+
+
