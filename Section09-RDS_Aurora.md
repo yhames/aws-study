@@ -13,6 +13,15 @@
   - [Serverless](#serverless)
   - [Global](#global)
   - [Machine Learning](#machine-learning)
+- [백업과 복원](#백업과-복원)
+  - [백업](#백업)
+    - [RDS](#rds-1)
+    - [Aura](#aura)
+  - [복원](#복원)
+    - [Restore options](#restore-options)
+    - [Database Cloning](#database-cloning)
+- [Security](#security)
+- [Proxy](#proxy)
 
 ## RDS란?
 
@@ -177,3 +186,106 @@ Global Aurora는 Aurora Cross-Region Replicas라고 불립니다.
 ![aurora_ml.png](images/aurora_ml.png)
 
 Aurora는 SageMaker, Comprehend와 같은 AWS ML의 서비스와 통합하여 사용할 수 있습니다. Aurora과 AWS ML을 통합하면 이상 행위 탐지, 광고 타겟팅, 감정 분석, 상품 추천 등 SQL 인터페이스를 통해 기계 학습 기반의 예측을 수행할 수 있습니다.
+
+# 백업과 복원
+
+## 백업
+
+### RDS
+
+* Automated Backups
+
+Automated Backups는 데이터베이스를 자동으로 백업하는 기능입니다. Automated Backups는 데이터베이스를 일정한 시간 간격으로 백업하고, 보존 기간을 설정할 수 있습니다.
+
+Automated Backups은 1~35일까지 보존할 수 있습니다. 0으로 설정하면 Automated Backups를 비활성화할 수 있습니다.
+
+* Manual DB Snapshots
+
+Manual DB Snapshots는 데이터베이스를 수동으로 백업하는 기능입니다. Manual DB Snapshots는 데이터베이스를 특정 시점으로 백업하고, 보존 기간을 설정할 수 있습니다.
+
+수동 스냅샷은 원하는 기간 동안 보관할 수 있습니다.
+
+> 스냅샷은 실제 스토리지보다 비용이 훨씬 저렴하기 때문에, 데이터베이스를 많이 사용하지 않는다면 스냅샷으로 보관하다가 필요할 때만 복원해서 사용하는 것이 좋습니다.
+
+### Aura
+
+* Automated Backups
+
+Aurora의 경우 Automated Backups는 1 ~ 35일까지 보존할 수 있고, 비활성화는 불가능합니다.
+
+point-in-time recovery를 지원하기 때문에 데이터베이스를 특정 시점으로 복원할 수 있습니다.
+
+* Manual DB Snapshots
+
+RDS와 동일합니다.
+
+## 복원
+
+### Restore options
+
+RDS와 Aurora 모두 스냅샷을 사용하여 데이터베이스를 복원할 수 있습니다.
+
+또한 S3를 사용해서 데이터베이스를 복원할 수 있습니다.
+
+* RDS
+
+RDS에서 S3의 데이터를 복원하기 위해서는 먼저 백업 파일을 온프레미스로 생성한 후 S3에 업로드하고, 데이터베이스를 복원할 때 RDS에서 S3 버킷의 백업 파일을 지정하여 복원하면 됩니다.
+
+* Aurora
+
+Aurora도 RDS와 동일하게 S3를 사용하여 데이터베이스를 복원할 수 있습니다. 다만 Aurora는 Percona XtraBackup을 사용해서 백업 파일을 생성해야 합니다.
+
+이후 동작은 RDS와 동일합니다.
+
+### Database Cloning
+
+Aurora는 데이터베이스 복제를 지원합니다.
+
+기존의 Aurora cluster에서 새로운 Aurora cluster를 생성하고, 데이터베이스를 복제할 수 있습니다.
+
+Aurora Database Cloning은 COP(copy-on-write)를 사용하기 때문에 스냅샷을 찍고 복원하는 것보다 빠릅니다.
+
+즉, 데이터베이스를 복제하는 시점에 데이터베이스를 복제하는 것이 아니라, 데이터베이스를 변경하는 시점에 해당 부분만 데이터를 복제합니다.
+
+프로덕션 데이터베이스를 테스트 데이터베이스로 복제할 때 유용합니다.
+
+# Security
+
+RDS와 Aurora는 데이터베이스 보안을 위한 다양한 기능을 제공합니다.
+
+* At-rest Encryption
+  * AWS KMS를 사용하여 데이터베이스를 암호화합니다.
+  * 마스터 데이터베이스가 암호화되지 않으면 레플리카도 암호화되지 않습니다.
+  * 암호화되지 않은 데이터베이스를 암호화하려면 스냅샷을 생성하고, 암호화된 데이터베이스로 복원해야합니다.
+* In-flight Encryption
+  * SSL/TLS를 사용하여 데이터베이스와 클라이언트 간의 통신을 암호화합니다.
+* IAM Authentication
+  * 비밀번호 대신 IAM Role을 사용하여 데이터베이스에 연결할 수 있습니다.
+* Security Groups
+  * 데이터베이스에 대한 인바운드 및 아웃바운드 트래픽을 제어하는 방화벽 역할을 합니다.
+* No SSH (except for RDS Custom)
+  * RDS에는 SSH를 통해 데이터베이스에 연결할 수 없습니다.
+* Audit Logs
+  * 데이터베이스에 대한 모든 작업을 로깅합니다.
+  * 로그 데이터는 시간이 지나면 사라집니다.
+  * 로그 데이터를 보관하려면 CloudWatch Logs 전용 서비스를 사용해야합니다.
+
+# Proxy
+
+![rds_proxy.png](images/rds_proxy.png)
+
+AWS에서는 RDS Proxy를 제공합니다.
+
+RDS Proxy는 데이터베이스 연결을 관리하는 프록시 서버입니다.
+
+RDS Proxy를 사용하면 데이터베이스 연결을 풀링(Pooling)하고, 데이터베이스 연결을 관리하고, 데이터베이스 연결을 모니터링할 수 있습니다.
+
+데이터베이스에서 커넥션을 새로 생성하는 것보다 RDS Proxy를 사용하여 커넥션 풀을 관리하면 데이터베이스에 대한 부하를 줄일 수 있습니다.
+
+RDS Proxy는 오토 스케일링을 지원하므로 용량을 관리할 필요가 없고 가용성을 높일 수 있습니다.
+
+기본 인스턴스가 아니라 대기 인스턴스로 실행되며, 장애조치 시간을 크게 줄일 수 있습니다.
+
+마지막으로 RDS Proxy를 통해서만 RDS에 접근하기 위해서 IAM 인증을 강제하면 보안을 더 강화할 수 있습니다.
+
+RDS Proxy는 public access가 절대 불가능합니다. 반드시 VPC 내에서만 사용할 수 있습니다.
