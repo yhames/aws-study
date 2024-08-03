@@ -6,8 +6,13 @@
   - [Read Replicas](#read-replicas)
   - [Multi AZ](#multi-az)
   - [RDS Custom](#rds-custom)
-  - [Aurora](#aurora)
-    - [고가용성과 레플리카](#고가용성과-레플리카)
+- [Aurora](#aurora)
+  - [고가용성과 레플리카](#고가용성과-레플리카)
+  - [Auto Scaling](#auto-scaling)
+  - [Custom Endpoints](#custom-endpoints)
+  - [Serverless](#serverless)
+    - [Global](#global)
+    - [Machine Learning](#machine-learning)
 
 ## RDS란?
 
@@ -96,7 +101,7 @@ Custom 옵션을 사용하면 RDS에서 제공하는 자동화 기능을 사용�
 하지만 Custom 옵션을 사용하면 RDS가 수시로 자동화, 유지 관리 혹은 스케일링 같은 작업을 수행하지 않도록 자동화를 비활성화하는것이 좋습니다. 
 또한 기저 인스턴스에 접근이 가능하기 때문에 문제 상황을 대비하여 스냅샷을 생성하는 것이 좋습니다.
  
-## Aurora
+# Aurora
 
 Aurora는 AWS에서 제공하는 MySQL과 PostgreSQL과 호환되는 관계형 데이터베이스 엔진입니다.
 
@@ -110,7 +115,7 @@ Aurora 스토리지는 10GB부터 시작하여 128TB까지 자동으로 확장�
 
 비용은 RDS에 비해 20% 높지만 스케일링 측면에서 더 효율적입니다.
 
-### 고가용성과 레플리카
+## 고가용성과 레플리카
 
 Aurora는 3개의 가용영역에 6개의 복제본을 생성하여 고가용성을 제공합니다.
 쓰기에는 6개 사본 중 4개가 필요하고, 읽기에는 3개가 필요합니다.
@@ -128,3 +133,47 @@ Aurora는 최대 15개의 읽기 전용 복제본을 생성할 수 있고, 읽�
 Aurora에서 쓰기 작업은 마스터 데이터베이스에서만 수행합니다. 마스터가 장애 조치로 인해 다른 복제본으로 전환될 수 있으므로, Writer Endpoint를 사용하여 마스터 데이터베이스에 접근합니다.
 
 레플리카는 auto-scaling이 가능하며, 레플리카는 Reader Endpoint 통해 접근할 수 있으며, Reader Endpoint는 로드 밸런싱을 하여 읽기 작업을 여러 레플리카에 분산합니다.
+
+## Auto Scaling
+
+![aurora-auto_scaling.png](images/aurora-auto_scaling.png)
+
+Aurora의 고급 기능에는 Auto Scaling이 있습니다. Auto Scaling은 읽기 전용 복제본을 자동으로 생성하고 삭제하여 읽기 작업을 분산합니다.
+
+새로운 리플리카가 생성되면, 데이터베이스 클러스터의 Reader Endpoint가 자동으로 확장됩니다.
+
+## Custom Endpoints
+
+![aurora_custom_01.png](images/aurora_custom_01.png)
+
+만약 여러 Aurora 인스턴스 클러스터를 서로 다른 업무 혹은 목적으로 사용해야한다면, Custom Endpoints를 사용하여 각 클러스터에 대한 엔드포인트를 생성할 수 있습니다.
+
+![aurora_custom_02.png](images/aurora_custom_02.png)
+
+Custom Endpoints를 생성하면 기존의 Reader Endpoint는 사용되지 않기 때문에 업무마다 엔드포인터를 지정해야합니다.
+
+## Serverless
+
+![aurora_serverless.png](images/aurora_serverless.png)
+
+Aurora Serverless는 서버리스 데이터베이스 서비스로, 프록시 플릿을 사용하여 데이터베이스에 연결합니다.
+
+업무량에 기반해 Aurora Serverless 데이터베이스가 생성되고, 프록시 플릿을 통해 데이터베이스에 접근합니다.
+
+실제 사용량에 따라 데이터 베이스가 auto-scaling되기 때문에 비용이 효율적이므로 업무량을 예측하기 어려운 경우에 사용합니다.
+
+### Global
+
+![aurora_global.png](images/aurora_global.png)
+
+Global Aurora는 Aurora Cross-Region Replicas라고 불립니다.
+
+최근에는 Aurora Global Database를 사용하는 것을 권장합니다.
+
+평균적으로 Aurora Global Database에서 `다른 리전으로 데이터를 복제하는데 1초 이하의 시간`이 걸립니다.
+
+### Machine Learning
+
+![aurora_ml.png](images/aurora_ml.png)
+
+Aurora는 SageMaker, Comprehend와 같은 AWS ML의 서비스와 통합하여 사용할 수 있습니다. Aurora과 AWS ML을 통합하면 이상 행위 탐지, 광고 타겟팅, 감정 분석, 상품 추천 등 SQL 인터페이스를 통해 기계 학습 기반의 예측을 수행할 수 있습니다.
