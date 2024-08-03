@@ -5,6 +5,7 @@
   - [Storage Auto Scaling](#storage-auto-scaling)
   - [Read Replicas](#read-replicas)
   - [Multi AZ](#multi-az)
+  - [RDS Custom](#rds-custom)
 
 ## RDS란?
 
@@ -80,3 +81,15 @@ Multi AZ를 활성화하면 다른 가용 영역에 원본 데이터베이스와
 2. 원본 데이터베이스 스냅샷 생성
 3. 다른 가용 영역에 스냅샷으로 스탠바이 데이터베이스 생성
 4. 스탠바이 데이터베이스와 원본 데이터베이스 동기화 설정
+
+## RDS Custom
+
+
+RDS Custom 옵션은 기저 운영체제나 사용자 정의 기능을 제공합니다.
+
+RDS Custom Oracle과 MS SQL Server에서만 지원하는 기능입니다.
+
+Custom 옵션을 사용하면 RDS에서 제공하는 자동화 기능을 사용하면서 기저 데이터베이스와 운영체제에 접근하여 내부 설정을 구성하거나 네이티브 기능을 홠성화할 수 있습니다.
+
+하지만 Custom 옵션을 사용하면 RDS가 수시로 자동화, 유지 관리 혹은 스케일링 같은 작업을 수행하지 않도록 자동화를 비활성화하는것이 좋습니다. 
+또한 기저 인스턴스에 접근이 가능하기 때문에 문제 상황을 대비하여 스냅샷을 생성하는 것이 좋습니다.
