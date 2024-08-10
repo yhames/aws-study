@@ -6,6 +6,8 @@
     - [Record Types](#record-types)
   - [Hosted Zone](#hosted-zone)
   - [TTL](#ttl)
+  - [CNAME과 Alias](#cname과-alias)
+    - [Alias Record](#alias-record)
 
 DNS는 Domain Name System의 약자로, 인터넷에서 호스트의 도메인 이름을 IP 주소로 변환하거나 그 반대의 역할을 하는 시스템입니다.
 
@@ -70,3 +72,40 @@ TTL을 높게 설정하면 캐시에 저장되는 시간이 길어지므로 Rout
 TTL을 낮게 설정하면 캐시에 저장되는 시간이 짧아지므로 Route 53에 요청하는 횟수가 늘어나게 됩니다. 하지만 DNS 레코드를 업데이트하면 캐시에 저장된 레코드가 빠르게 업데이트되어 새로운 레코드를 사용할 수 있습니다.
 
 TTL은 Alias 레코드에는 적용되지 않습니다. Alias 레코드는 Route 53에서 자동으로 할당합니다.
+
+## CNAME과 Alias
+
+
+CloudFront, ELB 등의 AWS Resources는 hostname을 가지고 있습니다. 이를 특정 도메인에 연결하기 위해서는 CNAME을 사용하거나 Alias를 사용할 수 있습니다.
+
+`CNAME`은 도메인 이름을 다른 도메인 이름으로 매핑하는 레코드 타입입니다. 루트 도메인에 대해서는 CNAME 레코드를 사용할 수 없습니다.
+
+`Alias`는 AWS 리소스에 대한 DNS 레코드를 생성하는 레코드 타입입니다. CNAME과 다르게 루트 도메인에 대해서도 사용할 수 있습니다. 또한 무료이고 자체적인 헬스 체크를 제공합니다.
+
+### Alias Record
+
+![rout53_alias.png](images/rout53_alias.png)
+
+Alias 레코드는 hostname을 특정 AWS 리소스에 연결하는 레코드 타입입니다.
+
+이는 DNS의 확장 기능이므로 다른 DNS 서비스에서도 사용할 수 있습니다.
+
+Alias 레코드는 리소스의 IP 주소가 변경되어도 자동으로 업데이트되므로 유지보수가 쉽습니다.
+
+CNAME 레코드와 달리 루트 도메인에 대해서도 사용할 수 있습니다.
+
+Alias 레코드는 항상 A/AAAA 레코드 타입으로 생성됩니다.
+
+Alias 레코드를 사용하면 TTL을 설정할 수 없습니다.
+
+Alias Record로 지정할 수 있는 Target은 다음과 같습니다.
+- ELB
+- CloudFront
+- API Gateway
+- Elastic Beanstalk
+- S3
+- VPC Endpoint
+- Global Accelerator
+- Route 53 Record in same Hosted Zone
+
+> Note: Alias Record는 **EC2의 DNS 이름을 사용할 수 없습니다**. EC2의 DNS 이름은 인스턴스가 시작될 때마다 변경될 수 있기 때문입니다.
